@@ -1,8 +1,14 @@
-<?php include('./header.php'); ?>
+<?php 
+include('./lib.php');
+include('./header.php');
+if(($user = isLogin()) == false){
+	header('location: index.php');
+}
+?>
 
 <div id="postform">
 <form method="POST" action="post.php">
-xxx, 有啥感想?
+<?php echo $user['username']; ?>, 请发牢骚?
 <br>
 <table>
 <tr><td><textarea cols="70" rows="3" name="status"></textarea></td></tr>

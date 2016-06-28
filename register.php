@@ -12,6 +12,11 @@
 include('lib.php');
 include('header.php');
 
+if(isLogin() == false) {
+	header('location: home.php');
+	exit;
+}
+
 $username = P('username');
 $password = P('password');
 $rpassword = P('rpassword');
@@ -27,11 +32,23 @@ if($password !== $rpassword){
 
 //连接redis
 $r = conredis();
+
 //查询用户名是否已经被注册
 $checkUser = $r->get('user:username:'.$username);
-if($checkUer){
+if($checkUser){
 	error('用户名已经被注册');
 }
 
+//获取userid
+$userid = $r->incr('global:userid');
+
+$r->set('user:userid:'.$userid.':usrname',$username);
+$r->set('user:userid:'.$userid.':password',$password);
+
+$r->set('user:username:'.$username.':userid',$userid);
+
+
 include('footer.php');
+
+
 ?>

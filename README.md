@@ -8,3 +8,7 @@ set user:userid:1:password admin
 
 set user:username:admin:userid 1
 
+发微博：
+set post:postid:1:time timestamp
+set post:postid:1:userid 1
+set post:postid:1:postcontent '前年买了个表''

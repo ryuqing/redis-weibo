@@ -1,6 +1,8 @@
 <?php 
 /***
-功能说明：基础函数库，做简单封装
+*
+*功能说明：基础函数库，做简单封装
+*
 ***/
 
 function P($key) {
@@ -21,6 +23,7 @@ function error($msg) {
 	exit;
 }
 
+//connect redis
 function conredis() {
 	static $r = null;
 	if($r !== null){
@@ -31,5 +34,17 @@ function conredis() {
 	$r->connect('127.0.0.1', 6379);	
 	return $r;
 }
+
+//判断用户是否登录
+function isLogin() {
+	if(!$_COOKIE['userid'] || !$_COOKIE['username']) {
+		return false;
+	}
+
+	return array('userid' => $_COOKIE['userid'], 'username' => $_COOKIE['username']);
+}
+
+
+
 
 ?>
