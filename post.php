@@ -14,6 +14,11 @@ if(($user = isLogin()) == false) {
 	exit;
 }
 
+$content = P('status');
+if(!$content) {
+	error('请填写内容');
+}
+
 $r = conredis();
 $postid = $r->incr('global:postid');
 $r->set('post:postid:'.$postid.':userid',$user['userid']);
@@ -21,4 +26,5 @@ $r->set('post:postid:'.$postid.':time',time());
 $r->set('post:postid:'.$postid.':content',$content)
 
 include('./footer.php');
+
 ?>
