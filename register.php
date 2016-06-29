@@ -47,6 +47,9 @@ $r->set('user:userid:'.$userid.':password',$password);
 
 $r->set('user:username:'.$username.':userid',$userid);
 
+setcookie('username', $username);
+setcookie('userid', $userid);
+header('location: home.php');
 
 include('footer.php');
 

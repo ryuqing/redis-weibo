@@ -23,8 +23,8 @@ $r = conredis();
 $postid = $r->incr('global:postid');
 $r->set('post:postid:'.$postid.':userid',$user['userid']);
 $r->set('post:postid:'.$postid.':time',time());
-$r->set('post:postid:'.$postid.':content',$content)
-
+$r->set('post:postid:'.$postid.':content',$content);
+echo '发布成功';
 include('./footer.php');
 
 ?>
