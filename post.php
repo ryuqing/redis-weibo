@@ -1,4 +1,4 @@
-<?php 
+ <?php 
 /*
 *功能说明：发布微博
 *1、判断是否登录
@@ -25,6 +25,13 @@ $r->set('post:postid:'.$postid.':userid',$user['userid']);
 $r->set('post:postid:'.$postid.':time',time());
 $r->set('post:postid:'.$postid.':content',$content);
 echo '发布成功';
-include('./footer.php');
 
+//要把微博推送给自己的粉丝
+$fans = $r->smembers('follower:'.$user['userid']);
+$fans[] = $user['userid'];
+
+foreach ($fans as $fansid) {
+	$r->lpush('receivepost:'.$fansid,$postid);
+}
+include('./footer.php');
 ?>
