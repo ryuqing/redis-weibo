@@ -10,7 +10,7 @@ function P($key) {
 }
 
 function G($key) {
-	return $_GET[$KEY];
+	return $_GET[$key];
 }
 
 //error

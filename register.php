@@ -49,8 +49,11 @@ $r->set('user:username:'.$username.':userid',$userid);
 
 setcookie('username', $username);
 setcookie('userid', $userid);
-header('location: home.php');
+//通过连接，为何50个最新的userid
+$r->lpush('newuserlist', $userid);
+$r->ltrim('newuserlist', 0, 49);
 
+header('location: home.php');
 include('footer.php');
 
 
