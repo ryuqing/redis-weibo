@@ -1,4 +1,12 @@
-<?php include('./header.php'); ?>
+<?php
+include('./lib.php');
+include('./header.php'); 
+$r = conredis();
+$newuserlist = array();
+$newuserlist = $r->sort('newuserlist',array('sore' => 'desc', 'get'=>'user:userid*:username'));
+
+
+?>
 <h2>热点</h2>
 <i>最新注册用户(redis中的sort用法)</i><br>
 <div><a class="username" href="profile.php?u=test">test</a> </div>

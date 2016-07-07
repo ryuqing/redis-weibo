@@ -49,6 +49,12 @@ $r->set('user:username:'.$username.':userid',$userid);
 
 setcookie('username', $username);
 setcookie('userid', $userid);
+
+//在链表里存50个最新的用户
+$r->lpush('newuserlink', $userid);
+$r->ltrim('newuserlink', 0, 49);
+
+
 header('location: home.php');
 
 include('footer.php');
