@@ -12,11 +12,6 @@
 include('lib.php');
 include('header.php');
 
-if(isLogin() == false) {
-	header('location: home.php');
-	exit;
-}
-
 $username = P('username');
 $password = P('password');
 $rpassword = P('rpassword');

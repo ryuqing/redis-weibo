@@ -40,11 +40,23 @@ function isLogin() {
 	if(!$_COOKIE['userid'] || !$_COOKIE['username']) {
 		return false;
 	}
+	if(!$_COOKIE['authid']){
+		return false;
+	}
+
+	$r = conredis();
+	$authid = $r->get('user:userid:'.$_COOKIE['userid'].':authid');
+	if($authid != $_COOKIE['authid']) {
+		return false;
+	}
 
 	return array('userid' => $_COOKIE['userid'], 'username' => $_COOKIE['username']);
 }
 
-
+function randsecret() {
+	$str = 'qerjkfjdshaoiewqpxngeqad!@#$%^&*fa@$2432sffsaoewqiurqerqr1234567098@';
+	return substr(str_shuffle($str), 0, 16);
+}
 
 
 ?>

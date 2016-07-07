@@ -1,4 +1,11 @@
-<?php include('./header.php'); ?>
+<?php 
+include('./lib.php');
+include('./header.php');
+if(($user = isLogin()) != false){
+	header('location: home.php');
+	exit;
+}
+?>
 <div id="welcomebox">
 <div id="registerbox">
 <h2>注册!</h2>

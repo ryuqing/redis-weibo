@@ -12,6 +12,7 @@ include('header.php');
 
 $username = P('username');
 $password = P('password');
+$authid = randsecret();
 
 if(!$username || !$password) {
 	error('请输入完整信息');
@@ -32,6 +33,9 @@ if($password != $p) {
 //登录成功设置cookie
 setcookie('username', $username);
 setcookie('userid', $userid);
+//验证放cookie 又放服务器
+$r->set('user:userid:'.$userid.':authid', $authid);
+setcookie('authid', $authid); 
 
 header('location:home.php');
 
