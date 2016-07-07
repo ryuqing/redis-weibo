@@ -6,18 +6,46 @@ if(($user = isLogin()) == false){
 	exit;
 }
 
-//去除自己发的和粉主推送过来的信息
+
 $r = conredis();
-//去除自己发的和粉主推过的信息
+/* 推送模型中
+//取出自己发的和粉主推过的信息
 $r->ltrim('receivepost:'.$user['userid'], 0, 49);
 //$newpost = $r->sort('receivepost:'.$user['userid'], array('sort'=>'desc', 'get'=>'post:postid:*:content'));
+*/
+
+/*自己取微博*/
+$star = $r->smembers('following:'.$user['userid']);
+$star[] = $user['userid'];
+
+$lastpull = $r->get('lastpull:userid:'.$user['userid']);
+if(!$lastpull) {
+	$lastpull = 0;
+}
+
+//拉取最新数据
+foreach ($star as $s) {
+	$latest = array_merge($latest, $r->zrangebyscore('newpost:userid:'.$s, $lastpull+1, 1<<32-1));
+}
+
+//更新lastpull
+if(!empty($latest)) {
+	$r->set('lastpull:userid:'.$user['userid'], end($latest));
+}
+
+//循环把latest放到自己主页应该收取的微博链里
+foreach ($latest as $l) {
+	$r->lpush('receivepost:'.$user['userid'], $l);
+}
+
+//保存个人主页，至多有1000条微博
+$r->ltrim('receivepost:'.$user['userid'], 0, 999);
 
 $newpost = $r->sort('receivepost:'.$user['userid'], array('sort'=>'desc'));
 
 //计算几个粉丝和关注，就是计算集合的元素个数
 $myfans = $r->sCard('follower:'.$user['userid']);
 $mystar = $r->sCard('following:'.$user['userid']);
-print_r($newpost);
 
 ?>
 
