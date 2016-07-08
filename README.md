@@ -9,6 +9,7 @@ set user:userid:1:password admin
 set user:username:admin:userid 1
 
 发微博：
-set post:postid:1:time timestamp
-set post:postid:1:userid 1
-set post:postid:1:postcontent '前年买了个表''
+1：把微博内容相关放在哈希结构表里
+2：把自己发的微博放在一个有序集合里,只要前20个。用于粉丝取出
+3：把自己发的微博id放在一个链表里，用于自己看自己微博用的。1000个之前的旧微博pop出放在一个全局链表里，写个定时任务将这些冷数据写入mysql里
+

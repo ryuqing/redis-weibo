@@ -36,6 +36,14 @@ if($r->zcard('newpost:userid'.$user['userid'] > 20)) {
 	$r->zremrangebyrank('newpost:userid'.$user['userid'], 0, 0);
 }
 
+//把自己发的微博id放在一个链表里，用于自己看自己微博用的，1000个之前的旧微博放在mysql里
+$r->lpush('mypost:userid:'.$user['userid'], $postid);
+if($r->llen('mypost:userid:'.$user['userid'])>1000) {
+	$r->rpoplpush('mypost:userid:'.$user['userid'],'global:store'); //global为一个全局链表存mysql
+
+}
+
+
 /*
 推送微博模型
 //要把微博推送给自己的粉丝
